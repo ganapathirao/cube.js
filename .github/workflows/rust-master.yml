@@ -147,17 +147,16 @@ jobs:
     strategy:
       matrix:
         target:
-          #- x86_64-unknown-linux-musl
+          - x86_64-unknown-linux-musl
           # procspawn is using libc::kill(pid as i32, libc::SIGKILL) which is not supported in windows
           # - x86_64-pc-windows-gnu
           - x86_64-apple-darwin
         include:
-          #- os: ubuntu-latest
-          #  target: x86_64-unknown-linux-musl
-          #  artifact_name: rust/target/x86_64-unknown-linux-musl/release/miniserve
-          #  # Maybe will be enabled later
-          #  cross: false
-          #  strip: true
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            artifact_name: rust/target/x86_64-unknown-linux-musl/release/cubestored
+            cross: true
+            strip: true
           #- os: windows-latest
           #  target: x86_64-pc-windows-msvc
           #  artifact_name: rust/target/x86_64-pc-windows-msvc/release/cubestored.exe
@@ -187,7 +186,9 @@ jobs:
         with:
           working-directory: rust
           command: build
-          args: --release --locked --target=${{ matrix.target }}
+          args: --release --target=${{ matrix.target }}
+          # We need to force it everywhere before using it in cross building
+          #args: --release --locked --target=${{ matrix.target }}
           use-cross: ${{ matrix.cross }}
       - name: Compress binaries
         uses: svenstaro/upx-action@v2
