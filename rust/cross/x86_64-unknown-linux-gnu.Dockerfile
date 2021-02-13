@@ -1,7 +1,7 @@
 FROM rustembedded/cross:x86_64-unknown-linux-gnu
 
 RUN yum -y upgrade
-RUN yum -y install wget centos-release-scl
+RUN yum -y install wget llvm-devel libclang centos-release-scl
 RUN yum -y install --setopt=tsflags=nodocs devtoolset-9-gcc*
 
 RUN mkdir /musl
