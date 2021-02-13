@@ -1,13 +1,13 @@
 FROM rustembedded/cross:x86_64-unknown-linux-gnu
 
 RUN yum -y upgrade
-RUN yum -y install wget
+RUN yum -y install wget centos-release-scl
+RUN yum -y install --setopt=tsflags=nodocs devtoolset-9-gcc*
 
 RUN mkdir /musl
 
 RUN wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz -O - | tar -xz &&\
     cd openssl-1.1.1i && \
-    #CC="musl-gcc -fPIE -pie" ./Configure no-shared no-async --prefix=/musl --openssldir=/musl/ssl linux-x86_64 && \
     ./Configure no-shared no-async --prefix=/musl --openssldir=/musl/ssl linux-x86_64 && \
     make depend && \
     make -j $(nproc) && \
@@ -30,5 +30,9 @@ ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
 ENV OPENSSL_DIR=/musl
 
-ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/glibc-$GLIB_C/lib"
 ENV PATH="/cargo/bin:$PATH"
+
+# https://austindewey.com/2019/03/26/enabling-software-collections-binaries-on-a-docker-image/
+COPY x86_64-unknown-linux-gnu-entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
