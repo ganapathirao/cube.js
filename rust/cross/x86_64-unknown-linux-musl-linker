@@ -1,14 +1,17 @@
 #!/bin/bash
 
+# Workaround on linking issue with Rust C++ C
+# Read more https://en.wikipedia.org/wiki/Black_magic
+
 args=()
 
 for arg in "$@"; do
 	if [[ $arg = *"Bdynamic"* ]]; then
 		args+=() # we do not want this arg
 	elif [[ $arg = *"crti.o"* ]]; then
-		args+=("$arg" "/opt/cross/lib/gcc/x86_64-linux-musl/9.2.0/crtbeginS.o" "-Bstatic")
+		args+=("$arg" "/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o" "-Bstatic")
 	elif [[ $arg = *"crtn.o"* ]]; then
-		args+=("-lgcc" "-lgcc_eh" "-lc" "/opt/cross/lib/gcc/x86_64-linux-musl/9.2.0/crtendS.o" "$arg")
+		args+=("-lgcc" "-lgcc_eh" "-lc" "/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o" "$arg")
 	else
 		args+=("$arg")
 	fi
