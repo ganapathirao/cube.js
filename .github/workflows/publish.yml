@@ -191,8 +191,7 @@ jobs:
       matrix:
         target:
           - x86_64-unknown-linux-gnu
-          # memory_trim...
-          #- x86_64-unknown-linux-musl
+          - x86_64-unknown-linux-musl
           # procspawn is using libc::kill(pid as i32, libc::SIGKILL) which is not supported in windows
           # - x86_64-pc-windows-gnu
           - x86_64-apple-darwin
@@ -203,11 +202,12 @@ jobs:
             # Because it's buggy
             cross: false
             strip: true
-          #- os: ubuntu-latest
-          #  target: x86_64-unknown-linux-musl
-          #  artifact_name: rust/target/x86_64-unknown-linux-musl/release/cubestored
-          #  cross: true
-          #  strip: true
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            artifact_name: rust/target/x86_64-unknown-linux-musl/release/cubestored
+            # Because it's buggy
+            cross: false
+            strip: true
           #- os: windows-latest
           #  target: x86_64-pc-windows-msvc
           #  artifact_name: rust/target/x86_64-pc-windows-msvc/release/cubestored.exe
