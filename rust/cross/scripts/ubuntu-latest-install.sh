@@ -2,4 +2,5 @@
 
 echo 'Install script for Ubuntu'
 
-#sudo apt-get update && sudo apt-get install -y llvm;
+sudo apt-get -y update
+sudo apt-get -y install musl-tools llvm
