@@ -135,7 +135,7 @@ jobs:
           override: true
           components: rustfmt
       - uses: Swatinem/rust-cache@v1
-      - run: .github/actions/${{ matrix.before_script }}.sh
+      - run: source .github/actions/${{ matrix.before_script }}.sh
         if: ${{ matrix.before_script }}
         shell: bash
       # https://github.com/actions-rs/cargo/issues/6
