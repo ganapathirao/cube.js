@@ -12,3 +12,7 @@ wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz -O - | tar -xz &&\
   make -j $(nproc) && \
   sudo make install && \
   cd .. && rm -rf openssl-1.1.1i
+
+export PKG_CONFIG_ALLOW_CROSS=1
+export OPENSSL_STATIC=true
+export OPENSSL_DIR=/musl

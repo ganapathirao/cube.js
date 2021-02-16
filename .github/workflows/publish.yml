@@ -232,7 +232,7 @@ jobs:
           components: rustfmt
       - uses: Swatinem/rust-cache@v1
       - run: .github/actions/${{ matrix.before_script }}.sh
-        if: ${{ matrix.os }}
+        if: ${{ matrix.before_script }}
         shell: bash
       # https://github.com/actions-rs/cargo/issues/6
       #- uses: actions-rs/cargo@v1
