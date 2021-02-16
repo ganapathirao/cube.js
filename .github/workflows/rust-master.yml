@@ -159,7 +159,8 @@ jobs:
             artifact_name: rust/target/x86_64-unknown-linux-gnu/release/cubestored
             # Because it's buggy
             cross: false
-            strip: false
+            strip: true
+            compress: false
           - os: ubuntu-latest
             before_script: cross-ubuntu-musl
             target: x86_64-unknown-linux-musl
@@ -167,16 +168,19 @@ jobs:
             # Because it's buggy
             cross: false
             strip: true
+            compress: true
           #- os: windows-latest
           #  target: x86_64-pc-windows-msvc
           #  artifact_name: rust/target/x86_64-pc-windows-msvc/release/cubestored.exe
           #  cross: false
           #  strip: true
+          #  compress: true
           - os: macos-latest
             target: x86_64-apple-darwin
             artifact_name: rust/target/x86_64-apple-darwin/release/cubestored
             cross: false
             strip: true
+            compress: true
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -203,6 +207,7 @@ jobs:
           use-cross: ${{ matrix.cross }}
       - name: Compress binaries
         uses: svenstaro/upx-action@v2
+        if: ${{ matrix.compress }}
         with:
           file: ${{ matrix.artifact_name }}
           args: --lzma
